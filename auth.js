@@ -38,6 +38,9 @@ function login (loginData) {
         body: JSON.stringify(loginData),
     };
 
+
+
+
     return fetch(api + "/auth/login", options)
         .then(response => response.json())
         .then(loginData => {
