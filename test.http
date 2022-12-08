@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ### Get Users
 Get https://microbloglite.herokuapp.com/api/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1bml2ZXJzZSIsImlhdCI6MTY3MDM1Mjk5NiwiZXhwIjoxNjcwNDM5Mzk2fQ.jPezNOA4v-zo9Jjc5sSnm7MeX3sBOrmY4WVhIRWLHbM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlN1bml2ZXJzZSIsImlhdCI6MTY3MDUyMzU4NiwiZXhwIjoxNjcwNjA5OTg2fQ.ohSnte39VNcHOcArklZ4J4sVtLrStZfyJ-0gGDJnVEA
 
  
 

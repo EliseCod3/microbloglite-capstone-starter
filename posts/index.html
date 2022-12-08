@@ -29,13 +29,13 @@
         <nav>
             <a href="./">Home</a>
             <a href="./">Profile</a>
-            <button type="button">LOG OUT</button>
+            <button type="button" id="logoutBtn">LOG OUT</button>
             
            </nav>
     </header>
     <select id="search-type-dropdown">
         <option value="">Select one...</option>
-        <option value="categories">Search by User</option>
+        <option value="users">Search by User</option>
         <option value="all">View All</option>
     </select>
     <div id="user-section" style="display: none;">
@@ -70,61 +70,11 @@
 
     <!-- Bootstrap Bundle (including Popper for popovers) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
+    <script src="./posts.js"></script>
     <!-- Page-specific code -->
     
 
-<script>
-(() => {
-    const $q = (s) => document.querySelector(s);
 
-    const tbody = $q("#posts-table tbody");
-
-    function loadData() {
-        const loginData = getLoginData();
-        const options = { 
-        method: "GET",
-        headers: { 
-            // This header is how we authenticate our user with the
-            // server for any API requests which require the user
-            // to be logged-in in order to have access.
-            // In the API docs, these endpoints display a lock icon.
-            "content-type": "application/json",
-            Authorization: `Bearer ${loginData.token}`,
-        },
-    };
-        return fetch("https://microbloglite.herokuapp.com/api/posts", options)
-        .then(response => response.json());
-    }
-
-
-
-    function fillTable(posts) {
-        console.log(posts)
-        for (const post of posts) {
-            const row = tbody.insertRow(-1);
-            let cell1 = row.insertCell(0);
-            let cell2 = row.insertCell(1);
-            let cell3 = row.insertCell(2);
-            let cell4 = row.insertCell(3);
-            let cell5 = row.insertCell(4);
-            cell5.innerText= post.likes;
-            
-            cell4.innerText = post.createdAt;
-            cell3.innerText = post.username;
-            cell2.innerText = post.text;
-            cell1.innerText = post._id;
-
-        }
-    }
-
-    window.onload = () => {
-        loadData().then(data => fillTable(data));
-    }
-
-
-})()
-</script>
 
 
    

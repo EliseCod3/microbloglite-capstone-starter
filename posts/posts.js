@@ -3,97 +3,102 @@
 "use strict";
 
 const searchTypeDropdown = document.getElementById("search-type-dropdown");
-const categoryDropdown = document.getElementById("user-dropdown");
-const categorySection  = document.getElementById("user-section");
-const postsTableBody = document.querySelector("#postsTable tbody");
+const userDropdown = document.getElementById("user-dropdown");
+const userSection = document.getElementById("user-section");
 
 
+const $q = (s) => document.querySelector(s);
 
-function selectSearchType() {
-    let selectedValue = searchTypeDropdown.value;
-    
-    
-    if(selectedValue == "users") {
-        loadCategoryDropdown();
-    }else if (selectedValue == "all") {
-        loadAllPostsTable();
-    }
-
-}
-
-
-function loadUserDropdown() {
-    userSection.style.display = "block";
-    posts-table.style.display = "none";
-
-    fetch("https://microbloglite.herokuapp.com/api/posts")
-    .then((response) => response.json())
-    .then((users) => {
-        for(const user of users) {
-            const option = document.createElement("option");
-            option.value = users._Id;
-            option.innerText = users.username;
-            categoryDropdown.appendChild(option);
-        }
-    })
-}
-
-function loadPostsBy() {
-    tableDisplaySection.style.display = "block";
-    
-    const selectedCategory = categoryDropdown.value;
-
-    fetch("https://microbloglite.herokuapp.com/api/posts")
-    .then((response) => response.json())
-    .then((posts) => {
-        posts.forEach((post) => {
-            if (posts.userId == selectedUser) {
-                posts-table.style.display = "block";
-                const row = tbody.insertRow(-1);
-                let cell1 = row.insertCell(0);
-                let cell2 = row.insertCell(1);
-                let cell3 = row.insertCell(2);
-                let cell4 = row.insertCell(3);
-                let cell5 = row.insertCell(4);
-                cell5.innerText= post.likes;
-                cell4.innerText = post.createdAt;
-                cell3.innerText = post.username;
-                cell2.innerText = post.text;
-                cell1.innerText = post._id;
-            }
-        });
-    })
-
-}
-
-function loadAllPostsTable() {
-    posts-table.style.display = "block";
-    fetch("https://microbloglite.herokuapp.com/api/posts")
-    .then((response) => response.json())
-    .then((posts) => {
-        products.forEach ((product) => {
-            let row = posts-TableBody.insertRow(-1);
-            let cell1 = row.insertCell(0);
-                let cell2 = row.insertCell(1);
-                let cell3 = row.insertCell(2);
-                let cell4 = row.insertCell(3);
-                let cell5 = row.insertCell(4);
-                cell5.innerText= post.likes;
-                cell4.innerText = post.createdAt;
-                cell3.innerText = post.username;
-                cell2.innerText = post.text;
-                cell1.innerText = post._id;
-            }
-    })
-
-}
+const tbody = $q("#posts-table tbody");
 
 window.onload = () => {
-    searchTypeDropdown.onchange = selectSearchType;
-    categoryDropdown.onchange = loadPostsByUsers;
+  loadData().then((data) => fillTable(data));
+};
+
+function loadData() {
+  const loginData = getLoginData();
+  const options = {
+    method: "GET",
+    headers: {
+      // This header is how we authenticate our user with the
+      // server for any API requests which require the user
+      // to be logged-in in order to have access.
+      // In the API docs, these endpoints display a lock icon.
+      "content-type": "application/json",
+      Authorization: `Bearer ${loginData.token}`,
+    },
+  };
+  return fetch("https://microbloglite.herokuapp.com/api/posts", options).then(
+    (response) => response.json()
+  );
+}
+
+function selectSearchType() {
+  let selectedValue = searchTypeDropdown.value;
+
+  if (selectedValue == "users") {
+    loadUserDropdown();
+  } else if (selectedValue == "all") {
+    loadPosts();
+  }
+}
+
+function loadUserDropdown() {
+  const loginData = getLoginData();
+  const options = {
+    method: "GET",
+    headers: {
+      // This header is how we authenticate our user with the
+      // server for any API requests which require the user
+      // to be logged-in in order to have access.
+      // In the API docs, these endpoints display a lock icon.
+      "content-type": "application/json",
+      Authorization: `Bearer ${loginData.token}`,
+    },
+  };
+
+  userSection.style.display = "block";
+  tbody.style.display = "none";
+
+  fetch("https://microbloglite.herokuapp.com/api/users",options)
+    .then((response) => response.json())
+    .then((users) => {
+      for (const user of users) {
+        const option = document.createElement("option");
+        option.value = user.username;
+        option.innerText = user.fullName;
+        userDropdown.appendChild(option);
+      }
+    });
 }
 
 
+function fillTable(posts) {
+  console.log(posts);
+  for (const post of posts) {
+    const row = tbody.insertRow(-1);
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
+    let cell3 = row.insertCell(2);
+    let cell4 = row.insertCell(3);
+    let cell5 = row.insertCell(4);
+    cell5.innerText = post.likes;
 
-
-
+    cell4.innerText = post.createdAt;
+    cell3.innerText = post.username;
+    cell2.innerText = post.text;
+    cell1.innerText = post._id;
+  }
+}
+function loadPosts() {
+    loadData().then((data)=> {
+        console.log(data);
+        fillTable(data);
+    })
+   
+  tbody.style.display = "block";
+}
+window.onload = () => {
+  searchTypeDropdown.onchange = selectSearchType;
+  userDropdown.onchange = loadPosts;
+};
