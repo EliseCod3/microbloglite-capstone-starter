@@ -30,6 +30,11 @@ Practice and experimentation provide experience, and experience provides confide
 -The rest of Thursday I spent working on optional features such as including a functional edit button with being able to save and show the changes made.
 
 ## From Ari Black
+-I started my contributions by creating the login page. Some of the stylings and button additions were from Bootstrap.
+
+-Rayna assisted me with finding and installing the image, as well as figuring out the js functions on the login page for the "remember me" checkox. 
+
+-On Wed, I made sure that the entire login page was centered and symmetrical. Simple colors were added to the buttons and H1 text to stay with the black, blue and white color scheme. 
 
 ## From Ja'ir Jabriel
 
